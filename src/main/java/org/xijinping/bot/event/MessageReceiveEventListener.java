@@ -19,7 +19,7 @@ public class MessageReceiveEventListener extends ListenerAdapter {
         List<FilterPhrase> filters = Bot.getConfig().filter;
 
         for(FilterPhrase ph : filters) {
-            if(!event.getMessage().getContentRaw().contains(ph.phrase)) {
+            if(!event.getMessage().getContentRaw().toLowerCase().contains(ph.phrase)) {
                 continue;
             }
 
