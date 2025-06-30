@@ -1,0 +1,21 @@
+{
+    "token": "",
+    "clientId": "",
+    "guildId": "",
+    
+    "userDataStorage": "user.dat",
+    
+    "lateMultiplier": 20,
+
+    "filterChannel": {
+        "active": true,
+        "channel": "1306658402772193400"
+    },
+
+    "filter": [
+        { "phrase": "mao", "amount": 1000 },
+        { "phrase": "zedong", "amount": 1000 },
+        { "phrase": "1989", "amount": -100000 },
+        { "phrase": "tiananmen", "amount": -100000 }
+    ]
+}
