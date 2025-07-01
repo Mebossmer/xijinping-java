@@ -1,17 +1,8 @@
 package org.xijinping.bot.event;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import org.xijinping.bot.Bot;
-import org.xijinping.bot.command.Timer;
-import org.xijinping.bot.savedata.SaveFile;
-import org.xijinping.bot.util.EmbedHelper;
-import org.xijinping.bot.util.TimeHelper;
+import org.xijinping.bot.time.Timer;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
@@ -32,6 +23,15 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
             return;
         }
 
+        for(Timer t : Bot.getTimerManager().getTimers()) {
+            if(t.getTargetVoiceChannel().getIdLong() == joined.getIdLong()) {
+                // timer stops and evaluates social credits
+
+                t.stopAndEvaluate();
+            }
+        }
+
+        /*
         User toStop = null;
         for(Timer t : Timer.timers) {
             if(t.channel().getId().equals(joined.getId())) {
@@ -73,6 +73,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
 
         Timer.stopTimer(toStop);
+        */
     }
 
 }

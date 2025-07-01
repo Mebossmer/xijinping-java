@@ -1,23 +1,20 @@
 package org.xijinping.bot;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import javax.naming.ConfigurationException;
 
 import org.xijinping.bot.command.CommandRegistry;
-import org.xijinping.bot.command.Timer;
 import org.xijinping.bot.config.BotConfig;
 import org.xijinping.bot.event.ButtonInteractionEventListener;
 import org.xijinping.bot.event.GuildVoiceUpdateListener;
 import org.xijinping.bot.event.MessageReceiveEventListener;
+import org.xijinping.bot.time.TimerManager;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class Bot {
+    private static TimerManager timerManager = null;
     private static BotConfig config = null;
     private static JDA jda = null;
 
@@ -28,6 +25,8 @@ public class Bot {
         if(config.token.isEmpty()) {
             throw new ConfigurationException("Please provide your bot token in config.json");
         }
+
+        timerManager = new TimerManager();
 
         // Register all commands
         CommandRegistry commands = new CommandRegistry();
@@ -50,8 +49,8 @@ public class Bot {
         commands.deploy(jda);
 
         // Handle timers
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(Timer::updateTimers, 0, 1, TimeUnit.SECONDS);
+        // ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        // executor.scheduleAtFixedRate(Timer::updateTimers, 0, 1, TimeUnit.SECONDS);
     }
 
     public static BotConfig getConfig() {
@@ -59,6 +58,14 @@ public class Bot {
     }
 
     public static JDA getDiscord() {
+        return jda;
+    }
+
+    public static TimerManager getTimerManager() {
+        return timerManager;
+    }
+
+    public static JDA getJda() {
         return jda;
     }
 }

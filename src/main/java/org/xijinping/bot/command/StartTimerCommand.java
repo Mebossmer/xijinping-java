@@ -1,18 +1,17 @@
 package org.xijinping.bot.command;
 
-import java.time.Instant;
+import org.xijinping.bot.Bot;
+import org.xijinping.bot.time.Timer;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class StartTimerCommand extends Command {
 
@@ -28,6 +27,27 @@ public class StartTimerCommand extends Command {
             return;
         }
 
+        TextChannel txch = intr.getChannel().asTextChannel();
+
+        // check if a timer already exists for the target user
+        for(Timer t : Bot.getTimerManager().getTimers()) {
+            if(t.getTargetUserId() == target.getIdLong()) {
+                intr.reply("A timer already exists for this user")
+                    .setEphemeral(true)
+                    .queue();
+
+                return;
+            }
+        }
+
+        Timer timer = new Timer(target.getIdLong(), intr.getUser().getIdLong(), ch, txch);
+        Bot.getTimerManager().addTimer(timer);
+
+        intr.reply("A timer was started for " + target.getAsMention())
+            .setEphemeral(true)
+            .queue();
+
+        /*
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(0xFF0000);
         builder.setTitle("⏲️ YOU ARE LATE ⏲️");
@@ -42,6 +62,7 @@ public class StartTimerCommand extends Command {
                     Timer.startTimer(msg.getId(), intr.getChannel().asTextChannel(), ch, target);
                 });
             });
+        */
     }
 
     @Override

@@ -1,11 +1,7 @@
 package org.xijinping.bot.event;
 
-import java.time.Instant;
+import org.xijinping.bot.Bot;
 
-import org.xijinping.bot.command.Timer;
-
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -18,6 +14,19 @@ public class ButtonInteractionEventListener extends ListenerAdapter {
             return;
         }
 
+        Bot.getTimerManager().getTimers().forEach(t -> {
+            if(t.getStartedByUserId() != event.getUser().getIdLong()) {
+                return;
+            }
+            
+            if(t.getMessageId() != event.getMessageIdLong()) {
+                return;
+            }
+            
+            t.setActive(false);
+        });
+
+        /*
         if(!event.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
             EmbedBuilder builder = new EmbedBuilder()
                 .setColor(0xFF0000)
@@ -28,7 +37,9 @@ public class ButtonInteractionEventListener extends ListenerAdapter {
 
             return;
         }
+        */
 
+        /*
         Timer.stopTimer(event.getMessage().getId());
 
         EmbedBuilder builder = new EmbedBuilder();
@@ -46,5 +57,6 @@ public class ButtonInteractionEventListener extends ListenerAdapter {
         builder2.setTimestamp(Instant.now());
 
         event.replyEmbeds(builder2.build()).setEphemeral(true).queue();
+        */
     }
 }
