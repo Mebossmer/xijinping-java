@@ -24,6 +24,10 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
 
         for(Timer t : Bot.getTimerManager().getTimers()) {
+            if(t.getTargetUserId() != event.getMember().getUser().getIdLong()) {
+                continue;
+            }
+
             if(t.getTargetVoiceChannel().getIdLong() == joined.getIdLong()) {
                 // timer stops and evaluates social credits
 
