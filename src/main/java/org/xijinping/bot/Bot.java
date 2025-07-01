@@ -47,10 +47,6 @@ public class Bot {
 
         // Finally, deploy all commands
         commands.deploy(jda);
-
-        // Handle timers
-        // ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        // executor.scheduleAtFixedRate(Timer::updateTimers, 0, 1, TimeUnit.SECONDS);
     }
 
     public static BotConfig getConfig() {

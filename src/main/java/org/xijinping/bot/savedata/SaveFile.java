@@ -53,8 +53,8 @@ public class SaveFile extends ArrayList<UserData> {
             add(UserData.withLashes(userId, 1));
             currentLashes = 1;
         } else {
-            data.get().socialCreditAmount += 1;
-            currentLashes = data.get().socialCreditAmount;
+            data.get().lashes += 1;
+            currentLashes = data.get().lashes;
         }
 
         write();

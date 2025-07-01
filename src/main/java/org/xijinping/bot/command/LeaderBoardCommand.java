@@ -21,13 +21,13 @@ public class LeaderBoardCommand extends Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
-        long option = intr.getOption("option").getAsLong();
+        int option = intr.getOption("option").getAsInt();
 
         // sort all members according to their "achievment"
         String title = "";
 
         SaveFile file = SaveFile.retrieve();
-        switch((int) option) {
+        switch(option) {
         case 1:
             title = "Our most loyal members ✅";
             file.sort(Comparator.comparingLong(u -> u.socialCreditAmount));
@@ -39,11 +39,11 @@ public class LeaderBoardCommand extends Command {
         case 3:
             title = "Records for being late ⏰";
             file.sort(Comparator.comparingLong(u -> u.lateRecord));
-            Collections.reverse(file);
             break;
         default:
             break;
         }
+        Collections.reverse(file);
 
         // create message
         EmbedBuilder builder = new EmbedBuilder()
@@ -56,7 +56,7 @@ public class LeaderBoardCommand extends Command {
         int i = 0;
         for(UserData data : file) {
             String text = "";
-            switch((int) option) {
+            switch(option) {
             case 1:
                 text = String.valueOf(data.socialCreditAmount);
                 break;
@@ -87,7 +87,7 @@ public class LeaderBoardCommand extends Command {
 
     @Override
     public SlashCommandData getData() {
-        return Commands.slash("leaderboard", "display our most loyal users")
+        return Commands.slash("leaderboard", "publicly shame lazy workers")
             .addOptions(new OptionData(OptionType.INTEGER, "option", "the value to rank", true)
                 .addChoice("Social Credits", 1)
                 .addChoice("Lashes", 2)
