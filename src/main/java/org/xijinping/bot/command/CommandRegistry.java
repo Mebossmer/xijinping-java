@@ -16,6 +16,7 @@ public class CommandRegistry extends ListenerAdapter {
         commands.add(new StartTimerCommand());
         commands.add(new SocialCreditsCommand());
         commands.add(new LeaderBoardCommand());
+        commands.add(new GetUserDataCommand());
     }
 
     @Override
