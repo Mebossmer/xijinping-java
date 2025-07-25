@@ -46,23 +46,6 @@ public class StartTimerCommand extends Command {
         intr.reply("A timer was started for " + target.getAsMention())
             .setEphemeral(true)
             .queue();
-
-        /*
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(0xFF0000);
-        builder.setTitle("⏲️ YOU ARE LATE ⏲️");
-        builder.setDescription(target.getAsMention() + " is late. Quickly join " + ch.getAsMention() + "!!!");
-        builder.addField(new Field("Time", "Starting...", true));
-        builder.setTimestamp(Instant.now());
-
-        intr.replyEmbeds(builder.build())
-            .addActionRow(Button.primary("btn_timer_stop", "Stop"))
-            .queue(hook -> {
-                hook.retrieveOriginal().queue(msg -> {
-                    Timer.startTimer(msg.getId(), intr.getChannel().asTextChannel(), ch, target);
-                });
-            });
-        */
     }
 
     @Override
