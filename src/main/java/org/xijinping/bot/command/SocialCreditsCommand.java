@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-public class SocialCreditsCommand extends Command {
+public class SocialCreditsCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {

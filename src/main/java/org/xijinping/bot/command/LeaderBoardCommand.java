@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-public class LeaderBoardCommand extends Command {
+public class LeaderBoardCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {

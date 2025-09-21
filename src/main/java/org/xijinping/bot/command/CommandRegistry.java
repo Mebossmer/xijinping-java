@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 public class CommandRegistry extends ListenerAdapter {
-    private List<Command> commands = new ArrayList<>();
+    private final List<Command> commands = new ArrayList<>();
 
     public void register() {
         commands.add(new LashCommand());
@@ -17,11 +17,12 @@ public class CommandRegistry extends ListenerAdapter {
         commands.add(new SocialCreditsCommand());
         commands.add(new LeaderBoardCommand());
         commands.add(new GetUserDataCommand());
+        commands.add(new BlackJackCommand());
     }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        event.deferReply();
+        event.deferReply().queue();
 
         String name = event.getName();
         for(Command c : commands) {

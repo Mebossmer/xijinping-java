@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-public class StartTimerCommand extends Command {
+public class StartTimerCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
