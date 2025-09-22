@@ -1,5 +1,6 @@
 package org.xijinping.bot.casino;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.xijinping.bot.Bot;
@@ -43,7 +44,7 @@ public class BlackJackInstance {
         playerCards.add(cardDeck.removeLast());
 
         if(getCardsValue(playerCards) > 21) {
-            lose();
+            endGame(false);
         }
 
         updateMessage();
@@ -59,21 +60,21 @@ public class BlackJackInstance {
         int playerValue = getCardsValue(playerCards);
 
         if(dealerValue > 21) {
-            win();
+            endGame(true);
 
             return;
         }
 
         if(playerValue > dealerValue) {
-            win();
+            endGame(true);
 
             return;
         }
 
-        lose();
+        endGame(false);
     }
 
-    public void lose() {
+    public void endGame(boolean wasWon) {
         TextChannel textChannel = Bot.getDiscord().getTextChannelById(textChannelId);
         if(textChannel == null) {
             return;
@@ -87,42 +88,24 @@ public class BlackJackInstance {
         int playerValue = getCardsValue(playerCards);
         int dealerValue = getCardsValue(dealerCards);
 
-        textChannel.retrieveMessageById(messageId)
-                .queue(msg -> msg.editMessageEmbeds(EmbedHelper.createBlackJackLostEmbed(user, playerValue, dealerValue).build()).queue());
-
-        // grant the social credits
-        long currentSocialCredits = SaveFile.retrieve().addSocialCredits(userId, -playerBet);
-
-        // send message
-        textChannel.sendMessageEmbeds(EmbedHelper.createSocialCreditsEmbed(-playerBet, user, currentSocialCredits, "Lost a round of Black Jack").build()).queue();
-
-        BlackJackManager.getInstances().remove(this);
-    }
-
-    public void win() {
-        TextChannel textChannel = Bot.getDiscord().getTextChannelById(textChannelId);
-        if(textChannel == null) {
-            return;
-        }
-
-        User user = Bot.getDiscord().getUserById(userId);
-        if(user == null) {
-            return;
-        }
-
-        int playerValue = getCardsValue(playerCards);
-        int dealerValue = getCardsValue(dealerCards);
+        EmbedBuilder embedBuilder = wasWon
+                        ? EmbedHelper.createBlackJackWonEmbed(user, playerValue, dealerValue)
+                        : EmbedHelper.createBlackJackLostEmbed(user, playerValue, dealerValue);
 
         textChannel.retrieveMessageById(messageId)
-                .queue(msg -> msg.editMessageEmbeds(EmbedHelper.createBlackJackWonEmbed(user, playerValue, dealerValue).build()).queue());
+                .queue(msg -> msg.editMessageEmbeds(embedBuilder.build()).queue());
 
-        long granted = playerBet * 2L;
+        long grantedCredits = wasWon ? playerBet * 2 : -playerBet;
 
         // grant the social credits
-        long currentSocialCredits = SaveFile.retrieve().addSocialCredits(userId, granted);
+        long currentSocialCredits = SaveFile.retrieve().addSocialCredits(userId, grantedCredits);
 
         // send message
-        textChannel.sendMessageEmbeds(EmbedHelper.createSocialCreditsEmbed(granted, user, currentSocialCredits, "Won a round of Black Jack").build()).queue();
+        String reason = wasWon
+                ? "Won a round of Black jack"
+                : "Lost a round of Black Jack";
+
+        textChannel.sendMessageEmbeds(EmbedHelper.createSocialCreditsEmbed(grantedCredits, user, currentSocialCredits, reason).build()).queue();
 
         BlackJackManager.getInstances().remove(this);
     }
@@ -168,40 +151,4 @@ public class BlackJackInstance {
         textChannel.retrieveMessageById(messageId)
                 .queue(msg -> msg.editMessageEmbeds(EmbedHelper.createBlackJackWonEmbed(user, playerValue, dealerValue).build()).queue());
     }
-
-    /*
-    public boolean didPlayerWin() {
-        return (getCardsValue(playerCards) > getCardsValue(dealerCards));
-    }
-
-    public void doDealersTurn() {
-        while(getCardsValue(dealerCards) < 17) {
-            drawOneCard(dealerCards);
-        }
-    }
-
-    private boolean drawOneCard(List<Card.Type> cards) {
-        cards.add(cardDeck.removeLast());
-
-        int value = getCardsValue(playerCards);
-
-        return value > 21;
-    }
-
-    public void drawOneCardForPlayer() {
-        if(drawOneCard(playerCards)) {
-            lose();
-        }
-    }
-
-    public static int getCardsValue(List<Card.Type> cards) {
-        int value = 0;
-
-        for(Card.Type type : cards) {
-            value += type.value;
-        }
-
-        return value;
-    }
-    */
 }

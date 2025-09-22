@@ -6,10 +6,12 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.xijinping.bot.casino.BlackJackManager;
 
+import java.util.Objects;
+
 public class BlackJackCommand implements Command {
     @Override
     public void execute(SlashCommandInteraction intr) {
-        long bet = intr.getOption("bet").getAsLong();
+        long bet = Objects.requireNonNull(intr.getOption("bet")).getAsLong();
         if(bet <= 0) {
             intr.reply("Invalid bet placed").queue();
 

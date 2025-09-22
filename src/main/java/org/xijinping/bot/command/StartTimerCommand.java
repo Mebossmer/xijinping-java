@@ -13,19 +13,15 @@ import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
+import java.util.Objects;
+
 public class StartTimerCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
-        User target = intr.getOption("target").getAsUser();
-        if(target == null) {
-            return;
-        }
+        User target = Objects.requireNonNull(intr.getOption("target")).getAsUser();
 
-        VoiceChannel ch = intr.getOption("channel").getAsChannel().asVoiceChannel();
-        if(ch == null) {
-            return;
-        }
+        VoiceChannel ch = Objects.requireNonNull(intr.getOption("channel")).getAsChannel().asVoiceChannel();
 
         TextChannel txch = intr.getChannel().asTextChannel();
 

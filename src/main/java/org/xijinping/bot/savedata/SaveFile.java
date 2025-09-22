@@ -31,7 +31,7 @@ public class SaveFile extends ArrayList<UserData> {
         Optional<UserData> data = getUser(userId);
 
         long currentSocialCredits = 0;
-        if(!data.isPresent()) {
+        if(data.isEmpty()) {
             add(UserData.withSocialCredits(userId, amount));
             currentSocialCredits = amount;
         } else {
@@ -49,7 +49,7 @@ public class SaveFile extends ArrayList<UserData> {
         Optional<UserData> data = getUser(userId);
 
         long currentLashes = 0;
-        if(!data.isPresent()) {
+        if(data.isEmpty()) {
             add(UserData.withLashes(userId, 1));
             currentLashes = 1;
         } else {
@@ -66,7 +66,7 @@ public class SaveFile extends ArrayList<UserData> {
     public boolean setRecordIfRecord(long userId, long timeInMilliseconds) {
         Optional<UserData> data = getUser(userId);
 
-        if(!data.isPresent()) {
+        if(data.isEmpty()) {
             add(UserData.withRecord(userId, timeInMilliseconds));
         } else if(timeInMilliseconds > data.get().lateRecord) {
             data.get().lateRecord = timeInMilliseconds;
@@ -87,9 +87,7 @@ public class SaveFile extends ArrayList<UserData> {
             file = (SaveFile) ois.readObject();
         } catch (FileNotFoundException e) {
             System.out.println("User data file not found, creating new one");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -101,8 +99,6 @@ public class SaveFile extends ArrayList<UserData> {
             new FileOutputStream(Bot.getConfig().userDataStorage)
         )) {
             oos.writeObject(this);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -20,6 +20,9 @@ public class BlackJackManager {
         }
 
         User user = Bot.getDiscord().getUserById(userId);
+        if(user == null) {
+            return;
+        }
 
         channel.sendMessageEmbeds(EmbedHelper.createBlackJackEmbed(user, 0, 0).build())
                 .addActionRow(

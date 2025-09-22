@@ -1,6 +1,7 @@
 package org.xijinping.bot.command;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.xijinping.bot.savedata.SaveFile;
@@ -18,15 +19,12 @@ public class GetUserDataCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
-        User target = intr.getOption("target").getAsUser();
-        if(target == null) {
-            return;
-        }
+        User target = Objects.requireNonNull(intr.getOption("target")).getAsUser();
 
         SaveFile file = SaveFile.retrieve();
 
         Optional<UserData> userData = file.stream().filter(ud -> target.getIdLong() == ud.userId).findFirst();
-        if(!userData.isPresent()) {
+        if(userData.isEmpty()) {
             return;
         }
 

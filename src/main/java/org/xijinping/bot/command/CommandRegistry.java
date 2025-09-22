@@ -22,8 +22,6 @@ public class CommandRegistry extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        event.deferReply().queue();
-
         String name = event.getName();
         for(Command c : commands) {
             if(c.getData().getName().equals(name)) {

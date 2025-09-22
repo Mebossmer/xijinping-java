@@ -19,9 +19,6 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
 
         VoiceChannel joined = union.asVoiceChannel();
-        if(joined == null) {
-            return;
-        }
 
         for(Timer t : Bot.getTimerManager().getTimers()) {
             if(t.getTargetUserId() != event.getMember().getUser().getIdLong()) {
