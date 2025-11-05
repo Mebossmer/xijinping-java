@@ -2,6 +2,7 @@ package org.xijinping.bot.time;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.xijinping.bot.Bot;
@@ -51,10 +52,10 @@ public class Timer {
         boolean isRecord = SaveFile.retrieve().setRecordIfRecord(targetUserId, timeInMilliseconds);
 
         EmbedBuilder builder = EmbedHelper.createSocialCreditsEmbed(
-            socialCreditsAmount, 
-            Bot.getDiscord().getUserById(targetUserId), 
-            currentSocialCredits, 
-            (isRecord ? "NEW RECORD: " : "") + "You were " + TimeHelper.getTimeAsString(timeInMilliseconds) + " too late!!!");
+                socialCreditsAmount,
+                Objects.requireNonNull(Bot.getDiscord().getUserById(targetUserId)),
+                currentSocialCredits,
+                (isRecord ? "NEW RECORD: " : "") + "You were " + TimeHelper.getTimeAsString(timeInMilliseconds) + " too late!!!");
 
         textChannel.sendMessageEmbeds(builder.build()).queue();
     }

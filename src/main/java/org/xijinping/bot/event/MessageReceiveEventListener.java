@@ -31,6 +31,10 @@ public class MessageReceiveEventListener extends ListenerAdapter {
 
             if(Bot.getConfig().filterChannel.active) {
                 TextChannel ch = event.getJDA().getTextChannelById(Bot.getConfig().filterChannel.channel);
+                if(ch == null) {
+                    return;
+                }
+
                 ch.sendMessageEmbeds(builder.build()).queue();
             } else {
                 event.getMessage().replyEmbeds(builder.build()).queue();

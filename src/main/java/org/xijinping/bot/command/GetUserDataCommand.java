@@ -1,6 +1,7 @@
 package org.xijinping.bot.command;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.xijinping.bot.savedata.SaveFile;
@@ -14,19 +15,16 @@ import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-public class GetUserDataCommand extends Command {
+public class GetUserDataCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
-        User target = intr.getOption("target").getAsUser();
-        if(target == null) {
-            return;
-        }
+        User target = Objects.requireNonNull(intr.getOption("target")).getAsUser();
 
         SaveFile file = SaveFile.retrieve();
 
         Optional<UserData> userData = file.stream().filter(ud -> target.getIdLong() == ud.userId).findFirst();
-        if(!userData.isPresent()) {
+        if(userData.isEmpty()) {
             return;
         }
 

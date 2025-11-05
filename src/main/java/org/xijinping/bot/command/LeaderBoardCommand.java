@@ -3,6 +3,7 @@ package org.xijinping.bot.command;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 
 import org.xijinping.bot.Bot;
 import org.xijinping.bot.savedata.SaveFile;
@@ -17,11 +18,11 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-public class LeaderBoardCommand extends Command {
+public class LeaderBoardCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
-        int option = intr.getOption("option").getAsInt();
+        int option = Objects.requireNonNull(intr.getOption("option")).getAsInt();
 
         // sort all members according to their "achievment"
         String title = "";

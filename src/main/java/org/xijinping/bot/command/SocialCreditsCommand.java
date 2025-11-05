@@ -11,16 +11,15 @@ import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-public class SocialCreditsCommand extends Command {
+import java.util.Objects;
+
+public class SocialCreditsCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
-        User target = intr.getOption("target").getAsUser();
-        if(target == null) {
-            return;
-        }
+        User target = Objects.requireNonNull(intr.getOption("target")).getAsUser();
 
-        long number = intr.getOption("amount").getAsLong();
+        long number = Objects.requireNonNull(intr.getOption("amount")).getAsLong();
         if(number == 0) {
             return;
         }

@@ -1,6 +1,7 @@
 package org.xijinping.bot.command;
 
 import java.time.Instant;
+import java.util.Objects;
 
 import org.xijinping.bot.savedata.SaveFile;
 
@@ -11,14 +12,11 @@ import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-public class LashCommand extends Command {
+public class LashCommand implements Command {
 
     @Override
     public void execute(SlashCommandInteraction intr) {
-        User target = intr.getOption("target").getAsUser();
-        if(target == null) {
-            return;
-        }
+        User target = Objects.requireNonNull(intr.getOption("target")).getAsUser();
 
         // add a lash
         SaveFile.retrieve().addLash(target.getIdLong());
