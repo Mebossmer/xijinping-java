@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import org.xijinping.bot.casino.BlackJackManager;
+import org.xijinping.bot.gambling.BlackJackManager;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class BlackJackCommand implements Command {
 
         BlackJackManager.startNewRound(channelId, userId, bet);
 
-        intr.reply("You Black Jack round has been started")
+        intr.reply("Your Black Jack round has been started\n")
                .setEphemeral(true)
                .queue();
     }

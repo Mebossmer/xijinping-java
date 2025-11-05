@@ -18,7 +18,7 @@ public class Bot {
     private static BotConfig config = null;
     private static JDA jda = null;
 
-    public static void main(String[] args) throws ConfigurationException {
+    public static void main(String[] args) throws Exception {
         // Load bot configuration file
         config = BotConfig.get("config.json");
 

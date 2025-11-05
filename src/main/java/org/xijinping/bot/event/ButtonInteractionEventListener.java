@@ -5,7 +5,7 @@ import org.xijinping.bot.Bot;
 
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.xijinping.bot.casino.BlackJackManager;
+import org.xijinping.bot.gambling.BlackJackManager;
 
 public class ButtonInteractionEventListener extends ListenerAdapter {
     @Override
